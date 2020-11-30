@@ -1,9 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Mon Nov 30 19:09:09 2020
-
-@author: kstoy
-"""
 
 # Adam optimizer
 class Optimizer_Adam:

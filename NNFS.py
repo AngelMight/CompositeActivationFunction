@@ -151,8 +151,7 @@ self.current_learning_rate = learning_rate
 self.decay = decay
 self.iterations = 0
 self.momentum = momentum
-nnfs_N2868
-k.stoyanov @ reach.bg
+
 
 
 # Call once before any parameter updates
@@ -174,29 +173,29 @@ def update_params(self, layer):
       layer.weight_momentums = np.zeros_like(layer.weights)
 # If there is no momentum array for weights
 # The array doesn't exist for biases yet either.
-layer.bias_momentums = np.zeros_like(layer.biases)
+      layer.bias_momentums = np.zeros_like(layer.biases)
 # Build weight updates with momentum - take previous
 # updates multiplied by retain factor and update with
 # current gradients
-weight_updates = \
-    self.momentum * layer.weight_momentums - \
-    self.current_learning_rate * layer.dweights
-layer.weight_momentums = weight_updates
+      weight_updates = \
+      self.momentum * layer.weight_momentums - \
+      self.current_learning_rate * layer.dweights
+      layer.weight_momentums = weight_updates
 # Build bias updates
-bias_updates = \
-    self.momentum * layer.bias_momentums - \
-    self.current_learning_rate * layer.dbiases
-layer.bias_momentums = bias_updates
+      bias_updates = \
+      self.momentum * layer.bias_momentums - \
+      self.current_learning_rate * layer.dbiases
+      layer.bias_momentums = bias_updates
 # Vanilla SGD updates (as before momentum update)
-    else:
-        weight_updates = -self.current_learning_rate * \
-                 layer.dweights
-        bias_updates = -self.current_learning_rate * \
-                 layer.dbiases
+     else:
+      weight_updates = -self.current_learning_rate * \
+      layer.dweights
+      bias_updates = -self.current_learning_rate * \
+      layer.dbiases
 # Update weights and biases using either
 # vanilla or momentum updates
-layer.weights += weight_updates
-layer.biases += bias_updates
+      layer.weights += weight_updates
+      layer.biases += bias_updates
 
 
 # Call once after any parameter updates
@@ -209,7 +208,7 @@ class Optimizer_Adagrad:
 
 
 # Initialize optimizer - set settings
-def __init__(self, learning_rate=1., decay=0., epsilon=1e-7):
+  def __init__(self, learning_rate=1., decay=0., epsilon=1e-7):
     self.learning_rate = learning_rate
 
 
@@ -232,7 +231,7 @@ def update_params(self, layer):
 
 # If layer does not contain cache arrays,
 # create them filled with zeros
-if not hasattr(layer, 'weight_cache'):
+ if not hasattr(layer, 'weight_cache'):
     layer.weight_cache = np.zeros_like(layer.weights)
 layer.bias_cache = np.zeros_like(layer.biases)
 # Update cache with squared current gradients
@@ -258,7 +257,7 @@ class Optimizer_RMSprop:
 
 
 # Initialize optimizer - set settings
-def __init__(self, learning_rate=0.001, decay=0., epsilon=1e-7,
+ def __init__(self, learning_rate=0.001, decay=0., epsilon=1e-7,
              rho=0.9):
     self.learning_rate = learning_rate
 
@@ -283,7 +282,7 @@ def update_params(self, layer):
 
 # If layer does not contain cache arrays,
 # create them filled with zeros
-if not hasattr(layer, 'weight_cache'):
+ if not hasattr(layer, 'weight_cache'):
     layer.weight_cache = np.zeros_like(layer.weights)
 layer.bias_cache = np.zeros_like(layer.biases)
 # Update cache with squared current gradients
@@ -311,7 +310,7 @@ class Optimizer_Adam:
 
 
 # Initialize optimizer - set settings
-def __init__(self, learning_rate=0.001, decay=0., epsilon=1e-7,
+ def __init__(self, learning_rate=0.001, decay=0., epsilon=1e-7,
              beta_1=0.9, beta_2=0.999):
     self.learning_rate = learning_rate
 
@@ -337,7 +336,7 @@ def update_params(self, layer):
 
 # If layer does not contain cache arrays,
 # create them filled with zeros
-if not hasattr(layer, 'weight_cache'):
+ if not hasattr(layer, 'weight_cache'):
     layer.weight_momentums = np.zeros_like(layer.weights)
 layer.weight_cache = np.zeros_like(layer.weights)
 layer.bias_momentums = np.zeros_like(layer.biases)
@@ -388,27 +387,28 @@ class Loss:
 
 
 # Regularization loss calculation
-def regularization_loss(self, layer):
+ def regularization_loss(self, layer):
 
 
 # 0 by default
-regularization_loss = 0
+  regularization_loss = 0
 # L1 regularization - weights
 # calculate only when factor greater than 0
-if layer.weight_regularizer_l1 > 0:
+  if layer.weight_regularizer_l1 > 0:
     regularization_loss += layer.weight_regularizer_l1 * \
                            np.sum(np.abs(layer.weights))
 # L2 regularization - weights
-if layer.weight_regularizer_l2 > 0:
+  if layer.weight_regularizer_l2 > 0:
     regularization_loss += layer.weight_regularizer_l2 * \
                            np.sum(layer.weights *
                                   layer.weights)
 # L1 regularization - biases
 # calculate only when factor greater than 0
-if layer.bias_regularizer_l1 > 0:
+  if layer.bias_regularizer_l1 > 0:
     regularization_loss += layer.bias_regularizer_l1 * \
                            np.sum(np.abs(layer.biases))
 # L2 regularization - biases
+  
 if layer.bias_regularizer_l2 > 0:
     regularization_loss += layer.bias_regularizer_l2 * \
                            np.sum(layer.biases *
@@ -422,7 +422,7 @@ def calculate(self, output, y):
 
 
 # Calculate sample losses
-sample_losses = self.forward(output, y)
+ sample_losses = self.forward(output, y)
 # Calculate mean loss
 data_loss = np.mean(sample_losses)
 # Return loss
@@ -434,11 +434,11 @@ class Loss_CategoricalCrossentropy(Loss):
 
 
 # Forward pass
-def forward(self, y_pred, y_true):
+ def forward(self, y_pred, y_true):
 
 
 # Number of samples in a batch
-samples = len(y_pred)
+  samples = len(y_pred)
 # Clip data to prevent division by 0
 # Clip both sides to not drag mean towards any value
 y_pred_clipped = np.clip(y_pred, 1e-7, 1 - 1e-7)
@@ -465,7 +465,7 @@ def backward(self, dvalues, y_true):
 
 
 # Number of samples
-samples = len(dvalues)
+ samples = len(dvalues)
 # Number of labels in every sample
 # We'll use the first sample to count them
 labels = len(dvalues[0])
@@ -484,7 +484,7 @@ class Activation_Softmax_Loss_CategoricalCrossentropy():
 
 
 # Creates activation and loss function objects
-def __init__(self):
+ def __init__(self):
     self.activation = Activation_Softmax()
 
 
@@ -496,7 +496,7 @@ def forward(self, inputs, y_true):
 
 
 # Output layer's activation function
-self.activation.forward(inputs)
+ self.activation.forward(inputs)
 # Set the output
 self.output = self.activation.output
 # Calculate and return loss value
@@ -508,7 +508,7 @@ def backward(self, dvalues, y_true):
 
 
 # Number of samples
-samples = len(dvalues)
+ samples = len(dvalues)
 # If labels are one-hot encoded,
 # turn them into discrete values
 if len(y_true.shape) == 2:
@@ -536,7 +536,7 @@ optimizer = Optimizer_Adam(learning_rate=0.02, decay=5e-7)
 # Train in loop
 for epoch in range(10001):
 # Perform a forward pass of our training data through this layer
-dense1.forward(X)
+ dense1.forward(X)
 # Perform a forward pass through activation function
 # takes the output of first dense layer here
 activation1.forward(dense1.output)
@@ -593,11 +593,10 @@ loss = loss_activation.forward(dense2.output, y_test)
 # calculate values along first axis
 predictions = np.argmax(loss_activation.output, axis=1)
 if len(y_test.shape) == 2:
-    y_test = np.argmax(y_test, axis=1)
-accuracy = np.mean(predictions == y_test)
+  y_test = np.argmax(y_test, axis=1)
+  accuracy = np.mean(predictions == y_test)
 print(f'validation, acc: {accuracy:.3f}, loss: {loss:.3f}')
->> >
-...
-epoch: 10000, acc: 0.947, loss: 0.217(data_loss: 0.157, reg_loss: 0.060),
+
+>>> acc: 0.947, loss: 0.217(data_loss: 0.157, reg_loss: 0.060),
 lr: 0.019900507413187767
 validation, acc: 0.830, loss: 0.435

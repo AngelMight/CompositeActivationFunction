@@ -392,8 +392,8 @@ class Loss_CategoricalCrossentropy(Loss):
             # Mask values - only for one-hot encoded labels
         elif len(y_true.shape) == 2:
             correct_confidences = np.sum(
-            y_pred_clipped * y_true,
-            axis=1
+                y_pred_clipped * y_true,
+                axis=1
             )
         # Losses
         negative_log_likelihoods = -np.log(correct_confidences)
@@ -484,8 +484,8 @@ for epoch in range(10001):
         data_loss = loss_activation.forward(dense2.output, y)
         # Calculate regularization penalty
         regularization_loss = \
-        loss_activation.loss.regularization_loss(dense1) + \
-        loss_activation.loss.regularization_loss(dense2)
+            loss_activation.loss.regularization_loss(dense1) + \
+            loss_activation.loss.regularization_loss(dense2)
         # Calculate overall loss
         loss = data_loss + regularization_loss
         # Calculate accuracy from output of activation2 and targets
@@ -493,14 +493,14 @@ for epoch in range(10001):
         predictions = np.argmax(loss_activation.output, axis=1)
         if len(y.shape) == 2:
             y = np.argmax(y, axis=1)
-            accuracy = np.mean(predictions == y)
+        accuracy = np.mean(predictions == y)
         if not epoch % 100:
             print(f'epoch: {epoch}, ' +
-          f'acc: {accuracy:.3f}, ' +
-          f'loss: {loss:.3f} (' +
-          f'data_loss: {data_loss:.3f}, ' +
-          f'reg_loss: {regularization_loss:.3f}), ' +
-          f'lr: {optimizer.current_learning_rate}')
+                  f'acc: {accuracy:.3f}, ' +
+                  f'loss: {loss:.3f} (' +
+                  f'data_loss: {data_loss:.3f}, ' +
+                  f'reg_loss: {regularization_loss:.3f}), ' +
+                  f'lr: {optimizer.current_learning_rate}')
         # Backward pass
         loss_activation.backward(loss_activation.output, y)
         dense2.backward(loss_activation.dinputs)
@@ -530,5 +530,5 @@ for epoch in range(10001):
         predictions = np.argmax(loss_activation.output, axis=1)
         if len(y_test.shape) == 2:
             y_test = np.argmax(y_test, axis=1)
-            accuracy = np.mean(predictions == y_test)
-            print(f'validation, acc: {accuracy:.3f}, loss: {loss:.3f}')
+        accuracy = np.mean(predictions == y_test)
+        print(f'validation, acc: {accuracy:.3f}, loss: {loss:.3f}')

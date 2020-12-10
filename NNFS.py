@@ -470,23 +470,32 @@ optimizer = Optimizer_Adam(learning_rate=0.02, decay=5e-7)
     
 # Train in loop
 for epoch in range(10001):
+    
+    
+    # Forward pass
     # Perform a forward pass of our training data through this layer
     dense1.forward(X)
+    
     # Perform a forward pass through activation function
     # takes the output of first dense layer here
     activation1.forward(dense1.output)
+    
     # Perform a forward pass through second Dense layer
     # takes outputs of activation function of first layer as inputs
     dense2.forward(activation1.output)
+    
     # Perform a forward pass through the activation/loss function
     # takes the output of second dense layer here and returns loss
     data_loss = loss_activation.forward(dense2.output, y)
+    
     # Calculate regularization penalty
     regularization_loss = \
         loss_activation.loss.regularization_loss(dense1) + \
         loss_activation.loss.regularization_loss(dense2)
+    
     # Calculate overall loss
     loss = data_loss + regularization_loss
+    
     # Calculate accuracy from output of activation2 and targets
     # calculate values along first axis
     predictions = np.argmax(loss_activation.output, axis=1)
@@ -500,6 +509,7 @@ for epoch in range(10001):
               f'data_loss: {data_loss:.3f}, ' +
               f'reg_loss: {regularization_loss:.3f}), ' +
               f'lr: {optimizer.current_learning_rate}')
+    
     # Backward pass
     loss_activation.backward(loss_activation.output, y)
     dense2.backward(loss_activation.dinputs)
@@ -510,6 +520,8 @@ for epoch in range(10001):
     optimizer.update_params(dense1)
     optimizer.update_params(dense2)
     optimizer.post_update_params()
+
+
 # Validate the model
 
 # Create test dataset

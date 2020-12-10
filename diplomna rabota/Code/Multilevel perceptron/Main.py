@@ -4,6 +4,7 @@ import nnfs
 import Layers
 import Activation
 import Optimizers
+import Loss
 
 from nnfs.datasets import spiral_data
 

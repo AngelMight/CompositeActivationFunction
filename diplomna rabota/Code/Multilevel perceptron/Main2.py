@@ -15,7 +15,7 @@ X, y = spiral_data(samples=100, classes=3)
 # Create Dense layer with 2 input features and 64 output values
 dense1 = Layers.Layer_Dense(2, 64, weight_regularizer_l2=5e-4,
                      bias_regularizer_l2=5e-4)
-dense2 = Layers.Layer_Dense(2, 64, weight_regularizer_l2=5e-4,
+dense2 = Layers.Layer_Dense(64, 64, weight_regularizer_l2=5e-4,
                      bias_regularizer_l2=5e-4)
     
 # Create ReLU activation (to be used with Dense layer):
@@ -47,7 +47,7 @@ for epoch in range(11001):
     # Calculate regularization penalty
     regularization_loss = \
         loss_activation.loss.regularization_loss(dense1) +\
-        loss_activation.loss.regularization_loss(dense1) +\
+        loss_activation.loss.regularization_loss(dense2) +\
         loss_activation.loss.regularization_loss(denseOut)
    # Calculate overall loss
     loss = data_loss + regularization_loss
@@ -67,9 +67,9 @@ for epoch in range(11001):
     loss_activation.backward(loss_activation.output, y)
     denseOut.backward(loss_activation.dinputs)
     activation2.backward(denseOut.dinputs)
-    dense2.backward(activation1.dinputs)
+    dense2.backward(activation2.dinputs)
     # Update weights and biases
-    activation1.backward(denseOut.dinputs)
+    activation1.backward(dense2.dinputs)
     dense1.backward(activation1.dinputs)
     # Update weights and biases
     optimizer.pre_update_params()
@@ -85,9 +85,9 @@ for epoch in range(11001):
 X_test, y_test = spiral_data(samples=100, classes=3)
 dense1.forward(X_test)
 activation1.forward(dense1.output)
-dense2.forward(X_test)
-activation2.forward(dense1.output)
-denseOut.forward(activation1.output)
+dense2.forward(activation1.output)
+activation2.forward(dense2.output)
+denseOut.forward(activation2.output)
 loss = loss_activation.forward(denseOut.output, y_test)
 # calculate values along first axis
 predictions = np.argmax(loss_activation.output, axis=1)

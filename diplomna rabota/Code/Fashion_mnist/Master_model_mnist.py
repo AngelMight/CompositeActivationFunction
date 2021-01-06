@@ -4,14 +4,12 @@ import os
 import pickle
 import copy
 import time
+from datetime import timedelta
 
-start = time.time()
-# Time measures
-end = time.time()
-hours, rem = divmod(end-start, 3600)
-minutes, seconds = divmod(rem, 60)
-print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+start_time = time.time()
 
+
+ 
 #Dense layer
 class Layer_Dense:
     
@@ -1124,6 +1122,12 @@ model.evaluate(X_test, y_test)
 #Save the model
 model.save('fashion_mnist.model')
 
+#Time TODO
+
+elapsed_time_secs = time.time() - start_time
+msg = "Execution took: %s secs " % timedelta(seconds=round(elapsed_time_secs))
+
+print(msg)    
 '''
 #Load the model
 model = Model.load('fashion_mnist.model')

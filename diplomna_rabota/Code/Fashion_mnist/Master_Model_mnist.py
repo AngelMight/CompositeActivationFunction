@@ -7,10 +7,7 @@ import time
 
 start = time.time()
 # Time measures
-end = time.time()
-hours, rem = divmod(end-start, 3600)
-minutes, seconds = divmod(rem, 60)
-print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+
 
 #Dense layer
 class Layer_Dense:
@@ -1124,6 +1121,11 @@ model.evaluate(X_test, y_test)
 #Save the model
 model.save('fashion_mnist.model')
 
+#Time measurements
+end = time.time()
+hours, rem = divmod(end-start, 3600)
+minutes, seconds = divmod(rem, 60)
+print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 '''
 #Load the model
 model = Model.load('fashion_mnist.model')

@@ -5,12 +5,8 @@ import pickle
 import copy
 import time
 
-start = time.time()
 # Time measures
-end = time.time()
-hours, rem = divmod(end-start, 3600)
-minutes, seconds = divmod(rem, 60)
-print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
+start = time.time()
 
 #Dense layer
 class Layer_Dense:
@@ -1066,7 +1062,7 @@ def create_data_mnist(path):
 
 # The main program
 NODES = 64
-EPOCHS = 5
+EPOCHS = 6
 NO_CLASES = 10
 BATCH_SIZE = 128
 
@@ -1099,9 +1095,9 @@ y = y[keys]
 model = Model()
 # Add layers
 model.add(Layer_Dense(X.shape[1], NODES))
-model.add(Activation_ReLU())
+model.add(Activation_Softmax())
 model.add(Layer_Dense(NODES, NODES))
-model.add(Activation_ReLU())
+model.add(Activation_Softmax())
 model.add(Layer_Dense(NODES, NO_CLASES))
 model.add(Activation_Softmax())
 # Set loss, optimizer and accuracy objects
@@ -1124,6 +1120,11 @@ model.evaluate(X_test, y_test)
 #Save the model
 model.save('fashion_mnist.model')
 
+#Time measures
+end = time.time()
+hours, rem = divmod(end-start, 3600)
+minutes, seconds = divmod(rem, 60)
+print("{:0>2}:{:0>2}:{:05.2f}".format(int(hours),int(minutes),seconds))
 '''
 #Load the model
 model = Model.load('fashion_mnist.model')
